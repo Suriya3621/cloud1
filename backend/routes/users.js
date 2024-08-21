@@ -244,15 +244,32 @@ router.post('/login', async (req, res) => {
     const { password } = req.body;
 
     try {
-        // Find the user with the matching password
-        const user = await User.findOne({password}).select('+password');
-        if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+        // Find all users
+        const users = await User.find({}).select('+password');
+        
+        if (!users.length) {
+            return res.status(404).json({ success: false, message: 'No users found' });
+        }
 
-        // Compare the provided password with the hashed password
-        const token = user.getJwtToken();
-        res.status(200).json({ success: true, token,user});
+        // Check if any user has a matching password
+        let matchedUser = null;
+        for (const user of users) {
+            const isMatch = await user.matchPassword(password);
+            if (isMatch) {
+                matchedUser = user;
+                break;
+            }
+        }
+
+        if (!matchedUser) {
+            return res.status(401).json({ success: false, message: 'Invalid password' });
+        }
+
+        // Generate JWT token
+        const token = matchedUser.getJwtToken();
+        res.status(200).json({ success: true, token, user: matchedUser });
     } catch (err) {
-        res.status(500).send({ success: false, error: err.message });
+        res.status(500).json({ success: false, error: err.message });
     }
 });
 
