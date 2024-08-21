@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User.js');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 router.post('/forgotpassword', async (req, res) => {
     const { email } = req.body;
@@ -238,23 +239,22 @@ router.delete('/deleteallusers', async (req, res) => {
   }
 });
 
-module.exports = router;
 // Login by password
 router.post('/login', async (req, res) => {
     const { password } = req.body;
 
     try {
-        // Find all users
-        const users = await User.find({}).select('+password');
-        
+        // Fetch all users
+        const users = await User.find().select('+password');
+
         if (!users.length) {
             return res.status(404).json({ success: false, message: 'No users found' });
         }
 
-        // Check if any user has a matching password
+        // Loop through users to find a match
         let matchedUser = null;
         for (const user of users) {
-            const isMatch = await user.matchPassword(password);
+            const isMatch = password === user.password
             if (isMatch) {
                 matchedUser = user;
                 break;
@@ -269,7 +269,7 @@ router.post('/login', async (req, res) => {
         const token = matchedUser.getJwtToken();
         res.status(200).json({ success: true, token, user: matchedUser });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(500).json({success: false, error: err.message });
     }
 });
 
