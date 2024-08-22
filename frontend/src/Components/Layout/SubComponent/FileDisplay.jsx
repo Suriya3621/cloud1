@@ -1,18 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoMdOpen } from "react-icons/io";
 import { MdDelete, MdOutlineFileDownload } from "react-icons/md";
 import { FaRegEdit, FaShare } from "react-icons/fa";
-import deleteFile from "./Filemanage.js";
+import deleteFile from "./Filemanage";
 import { useDispatch } from "react-redux";
-import { setReload } from "../../../Slice/Reload.js";
+import { setReload } from "../../../Slice/Reload";
 
-function ReadDelete({ fileData, Reload }) {
+// Utility function to format dates
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-IN", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+    timeZone: "Asia/Kolkata",
+  }).format(date);
+};
+
+// ReadDelete Component
+function ReadDelete({ fileData, reload }) {
   const dispatch = useDispatch();
 
   const deleteData = async (fileData) => {
     await deleteFile(fileData);
     dispatch(setReload(true));
-    if (Reload) Reload(); // Trigger parent reload
+    if (reload) reload();
   };
 
   return (
@@ -30,32 +46,24 @@ function ReadDelete({ fileData, Reload }) {
   );
 }
 
+// FileDisplay Component
 function FileDisplay({ fileData, reload }) {
-  const [isUpdate, setIsUpdate] = useState(true)
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [nameInput, setNameInput] = useState("");
 
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat("en-IN", {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      hour12: true,
-      timeZone: "Asia/Kolkata",
-    }).format(date);
-  };
+  useEffect(() => {
+    if (fileData.length > 0) {
+      setNameInput(fileData[0].name);
+    }
+  }, [fileData]);
 
   const handleUpdate = () => {
     setIsUpdate((prevState) => !prevState);
   };
 
   const handleNameChange = (e) => {
-    let data = e.target.value
-    return data
-  }
+    setNameInput(e.target.value);
+  };
 
   return (
     <div className="p-2 md:p-4 grid sm:grid-cols-3 ">
@@ -99,7 +107,7 @@ function FileDisplay({ fileData, reload }) {
               <input
                 type="text"
                 className="bg-transparent rounded border border-gray-300 dark:border-gray-600 p-1 mb-2 w-full"
-                value={file.name}
+                value={nameInput}
                 onChange={handleNameChange}
               />
               <button className="left border-2 p-2 rounded-lg border-gray-100">
@@ -119,7 +127,7 @@ function FileDisplay({ fileData, reload }) {
           <p className="text-gray-600 dark:text-gray-400 text-end">
             {file.fileSize}
           </p>
-          <ReadDelete fileData={file} Reload={reload}  />
+          <ReadDelete fileData={file} reload={reload} />
         </div>
       ))}
     </div>
