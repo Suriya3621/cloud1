@@ -22,7 +22,7 @@ const formatDate = (dateString) => {
 };
 
 // ReadDelete Component
-function ReadDelete({ fileData, reload }) {
+function ReadDelete({ fileData,update, reload }) {
   const dispatch = useDispatch();
 
   const deleteData = async (fileData) => {
@@ -33,7 +33,7 @@ function ReadDelete({ fileData, reload }) {
 
   return (
     <div className="flex border-2 p-2 rounded-3xl bg-slate-100 dark:bg-slate-700 shadow-lg dark:border-slate-600 space-x-2 justify-between mt-2">
-      <button>
+      <button onClick={update}>
         <FaRegEdit className="text-blue-500 text-2xl md:text-3xl hover:text-blue-700 cursor-pointer" />
       </button>
       <button onClick={() => deleteData(fileData)}>
@@ -127,7 +127,7 @@ function FileDisplay({ fileData, reload }) {
           <p className="text-gray-600 dark:text-gray-400 text-end">
             {file.fileSize}
           </p>
-          <ReadDelete fileData={file} reload={reload} />
+          <ReadDelete fileData={file} update={handleUpdate} reload={reload} />
         </div>
       ))}
     </div>
