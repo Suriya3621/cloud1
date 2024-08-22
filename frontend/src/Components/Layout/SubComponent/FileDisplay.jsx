@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoMdOpen } from "react-icons/io";
 import { MdDelete, MdOutlineFileDownload } from "react-icons/md";
-import { FaLiraSign, FaRegEdit, FaShare } from "react-icons/fa";
+import { FaRegEdit, FaShare } from "react-icons/fa";
 import deleteFile from "./Filemanage.js";
 import { useDispatch } from "react-redux";
-import { setReload } from "../../../Slice/Reload.js"; // Correct import
+import { setReload } from "../../../Slice/Reload.js";
 
-function ReadDelete({ fileData, Reload }){
+function ReadDelete({ fileData, Reload }) {
   const dispatch = useDispatch();
 
   const deleteData = async (fileData) => {
@@ -31,8 +31,16 @@ function ReadDelete({ fileData, Reload }){
 }
 
 function FileDisplay({ fileData, reload }) {
-  const [isUpdate, setIsUpdate] = useState(true);
-  const [nameInput, setNameInput] = useState();
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+
+  // Set the initial value of nameInput when the component mounts or when fileData changes
+  useEffect(() => {
+    if (fileData.length > 0) {
+      setNameInput(fileData[0].name); // This assumes you want the first file's name
+    }
+  }, [fileData]);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("en-IN", {
@@ -46,13 +54,15 @@ function FileDisplay({ fileData, reload }) {
       timeZone: "Asia/Kolkata",
     }).format(date);
   };
+
   const handleUpdate = () => {
-    if (!isUpdate) {
-      setIsUpdate(true);
-    } else {
-      setIsUpdate(false);
-    }
+    setIsUpdate((prevState) => !prevState);
   };
+
+  const handleNameChange = (e) => {
+    setNameInput(e.target.value);
+  };
+
   return (
     <div className="p-2 md:p-4 grid sm:grid-cols-3 ">
       {fileData.map((file, index) => (
@@ -94,11 +104,12 @@ function FileDisplay({ fileData, reload }) {
             <div>
               <input
                 type="text"
-                className="bg-transparent rounded"
-                value={setNameInput(file.name)}
+                className="bg-transparent rounded border border-gray-300 dark:border-gray-600 p-1 mb-2 w-full"
+                value={nameInput}
+                onChange={handleNameChange}
               />
               <button className="left border-2 p-2 rounded-lg border-gray-100">
-                Make a {file.private ? "private" : "public"}
+                Make {file.private ? "private" : "public"}
               </button>
             </div>
           ) : (
@@ -106,6 +117,7 @@ function FileDisplay({ fileData, reload }) {
               {file.name}
             </h3>
           )}
+
           <p className="text-gray-600 dark:text-gray-400">
             {formatDate(file.uploadDate)}
           </p>
