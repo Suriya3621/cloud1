@@ -5,6 +5,8 @@ import { FaRegEdit, FaShare } from "react-icons/fa";
 import deleteFile from "./Filemanage";
 import { useDispatch } from "react-redux";
 import { setReload } from "../../../Slice/Reload";
+import { MdOutlinePublic } from "react-icons/md";
+import { RiGitRepositoryPrivateLine } from "react-icons/ri";
 
 // Utility function to format dates
 const formatDate = (dateString) => {
@@ -125,8 +127,8 @@ function FileDisplay({ fileData, reload }) {
               <input
                 type="text"
                 className="bg-transparent rounded border border-gray-300 dark:border-gray-600 p-1 mb-2 w-full"
-                value={nameInputs[file.id] || ''}
-                onChange={(e) => handleNameChange(e, file.id)}
+                value={nameInputs[file._id] || ''}
+                onChange={(e) => handleNameChange(e, file._id)}
               />
               <button
                 className="border-2 p-2 rounded-lg border-gray-100"
@@ -146,7 +148,7 @@ function FileDisplay({ fileData, reload }) {
             {formatDate(file.uploadDate)}
           </p>
           <p className="text-gray-600 dark:text-gray-400">
-            {file.privates ? "Private" : "Public"}
+            {file.privates ? `${<RiGitRepositoryPrivateLine />}Private` : `${<MdOutlinePublic/>}Public`}
           </p>
           <p className="text-gray-600 dark:text-gray-400 text-end">
             {file.fileSize}
