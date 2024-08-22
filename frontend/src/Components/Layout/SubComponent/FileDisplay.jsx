@@ -147,9 +147,19 @@ function FileDisplay({ fileData, reload }) {
           <p className="text-gray-600 dark:text-gray-400">
             {formatDate(file.uploadDate)}
           </p>
-          <p className="text-gray-600 dark:text-gray-400">
-            {file.privates ? `${<RiGitRepositoryPrivateLine />}Private` : `${<MdOutlinePublic/>}Public`}
-          </p>
+          <p className="text-gray-600 dark:text-gray-400 flex items-center">
+  {file.privates ? (
+    <>
+      <RiGitRepositoryPrivateLine className="mr-1" />
+      Private
+    </>
+  ) : (
+    <>
+      <MdOutlinePublic className="mr-1" />
+      Public
+    </>
+  )}
+</p>
           <p className="text-gray-600 dark:text-gray-400 text-end">
             {file.fileSize}
           </p>
