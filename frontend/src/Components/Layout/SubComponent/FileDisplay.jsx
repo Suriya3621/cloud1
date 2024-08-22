@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { IoMdOpen } from "react-icons/io";
 import { MdDelete, MdOutlineFileDownload } from "react-icons/md";
 import { FaRegEdit, FaShare } from "react-icons/fa";
@@ -31,15 +31,8 @@ function ReadDelete({ fileData, Reload }) {
 }
 
 function FileDisplay({ fileData, reload }) {
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [nameInput, setNameInput] = useState("");
+  const [isUpdate, setIsUpdate] = useState(true)
 
-  // Set the initial value of nameInput when the component mounts or when fileData changes
-  useEffect(() => {
-    if (fileData.length > 0) {
-      setNameInput(fileData[0].name); // This assumes you want the first file's name
-    }
-  }, [fileData]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -60,8 +53,9 @@ function FileDisplay({ fileData, reload }) {
   };
 
   const handleNameChange = (e) => {
-    setNameInput(e.target.value);
-  };
+    let data = e.target.value
+    return data
+  }
 
   return (
     <div className="p-2 md:p-4 grid sm:grid-cols-3 ">
@@ -105,7 +99,7 @@ function FileDisplay({ fileData, reload }) {
               <input
                 type="text"
                 className="bg-transparent rounded border border-gray-300 dark:border-gray-600 p-1 mb-2 w-full"
-                value={nameInput}
+                value={file.name}
                 onChange={handleNameChange}
               />
               <button className="left border-2 p-2 rounded-lg border-gray-100">
@@ -125,7 +119,7 @@ function FileDisplay({ fileData, reload }) {
           <p className="text-gray-600 dark:text-gray-400 text-end">
             {file.fileSize}
           </p>
-          <ReadDelete fileData={file} Reload={reload} />
+          <ReadDelete fileData={file} Reload={reload}  />
         </div>
       ))}
     </div>
