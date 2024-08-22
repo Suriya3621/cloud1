@@ -22,13 +22,13 @@ const formatDate = (dateString) => {
 };
 
 // ReadDelete Component
-function ReadDelete({ fileData,update, reload }) {
+function ReadDelete({ file, update, reload }) {
   const dispatch = useDispatch();
 
-  const deleteData = async (fileData) => {
-    await deleteFile(fileData);
+  const deleteData = async () => {
+    await deleteFile(file);
     dispatch(setReload(true));
-    if (reload) reload();
+    if (reload) reload(); // Trigger reload if the function is passed
   };
 
   return (
@@ -36,7 +36,7 @@ function ReadDelete({ fileData,update, reload }) {
       <button onClick={update}>
         <FaRegEdit className="text-blue-500 text-2xl md:text-3xl hover:text-blue-700 cursor-pointer" />
       </button>
-      <button onClick={() => deleteData(fileData)}>
+      <button onClick={deleteData}>
         <MdDelete className="text-red-500 text-2xl md:text-3xl hover:text-red-700 cursor-pointer" />
       </button>
       <MdOutlineFileDownload className="text-blue-500 text-2xl md:text-3xl hover:text-blue-600 cursor-pointer" />
@@ -48,30 +48,45 @@ function ReadDelete({ fileData,update, reload }) {
 
 // FileDisplay Component
 function FileDisplay({ fileData, reload }) {
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [nameInput, setNameInput] = useState("");
+  const [editingFileId, setEditingFileId] = useState(null);
+  const [nameInputs, setNameInputs] = useState({});
 
   useEffect(() => {
-    if (fileData.length > 0) {
-      setNameInput(fileData[0].name);
-    }
+    const initialInputs = fileData.reduce((acc, file) => {
+      acc[file.id] = file.name;
+      return acc;
+    }, {});
+    setNameInputs(initialInputs);
   }, [fileData]);
 
-  const handleUpdate = () => {
-    setIsUpdate((prevState) => !prevState);
+  const handleUpdate = (fileId) => {
+    setEditingFileId(editingFileId === fileId ? null : fileId);
   };
 
-  const handleNameChange = (e) => {
-    setNameInput(e.target.value);
+  const handleNameChange = (e, fileId) => {
+    setNameInputs({
+      ...nameInputs,
+      [fileId]: e.target.value,
+    });
   };
+
+  const handleSave = (file) => {
+    // Implement save logic here, for example sending updates to server
+    handleUpdate(file.id); // Exit update mode after saving
+  };
+
+  if (fileData.length === 0) {
+    return <p>No files available</p>; // Handle empty file list
+  }
 
   return (
-    <div className="p-2 md:p-4 grid sm:grid-cols-3 ">
-      {fileData.map((file, index) => (
+    <div className="p-2 md:p-4 grid sm:grid-cols-3 gap-4">
+      {fileData.map((file) => (
         <div
-          key={index}
+          key={file.id}
           className="mb-4 p-4 md:mb-6 md:p-6 border border-gray-300 rounded-lg dark:border-gray-600 shadow-lg dark:shadow-gray-800 bg-white dark:bg-gray-900"
         >
+          {/* Video Display */}
           {file.fileType.startsWith("video") && (
             <div className="mb-4 rounded overflow-x-hidden">
               <video
@@ -84,6 +99,7 @@ function FileDisplay({ fileData, reload }) {
             </div>
           )}
 
+          {/* Image Display */}
           {file.fileType.startsWith("image") && (
             <div className="mb-4">
               <img
@@ -94,6 +110,7 @@ function FileDisplay({ fileData, reload }) {
             </div>
           )}
 
+          {/* Audio Display */}
           {file.fileType.startsWith("audio") && (
             <div className="mb-4">
               <audio src={file.url} controls className="w-full">
@@ -102,16 +119,20 @@ function FileDisplay({ fileData, reload }) {
             </div>
           )}
 
-          {isUpdate ? (
+          {/* Conditional Update Mode */}
+          {editingFileId === file.id ? (
             <div>
               <input
                 type="text"
                 className="bg-transparent rounded border border-gray-300 dark:border-gray-600 p-1 mb-2 w-full"
-                value={nameInput}
-                onChange={handleNameChange}
+                value={nameInputs[file.id] || ''}
+                onChange={(e) => handleNameChange(e, file.id)}
               />
-              <button className="left border-2 p-2 rounded-lg border-gray-100">
-                Make {file.private ? "private" : "public"}
+              <button
+                className="border-2 p-2 rounded-lg border-gray-100"
+                onClick={() => handleSave(file)}
+              >
+                Save
               </button>
             </div>
           ) : (
@@ -120,14 +141,19 @@ function FileDisplay({ fileData, reload }) {
             </h3>
           )}
 
+          {/* File Details */}
           <p className="text-gray-600 dark:text-gray-400">
             {formatDate(file.uploadDate)}
           </p>
-          <p className="text-gray-600 dark:text-gray-400">{file.privates}</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            {file.privates ? "Private" : "Public"}
+          </p>
           <p className="text-gray-600 dark:text-gray-400 text-end">
             {file.fileSize}
           </p>
-          <ReadDelete fileData={file} update={handleUpdate} reload={reload} />
+
+          {/* Action Buttons */}
+          <ReadDelete file={file} update={() => handleUpdate(file.id)} reload={reload} />
         </div>
       ))}
     </div>
