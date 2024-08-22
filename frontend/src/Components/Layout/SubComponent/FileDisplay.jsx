@@ -53,7 +53,7 @@ function FileDisplay({ fileData, reload }) {
 
   useEffect(() => {
     const initialInputs = fileData.reduce((acc, file) => {
-      acc[file.id] = file.name;
+      acc[file._id] = file.name;
       return acc;
     }, {});
     setNameInputs(initialInputs);
@@ -72,7 +72,7 @@ function FileDisplay({ fileData, reload }) {
 
   const handleSave = (file) => {
     // Implement save logic here, for example sending updates to server
-    handleUpdate(file.id); // Exit update mode after saving
+    handleUpdate(file._id); // Exit update mode after saving
   };
 
   if (fileData.length === 0) {
@@ -83,7 +83,7 @@ function FileDisplay({ fileData, reload }) {
     <div className="p-2 md:p-4 grid sm:grid-cols-3 gap-4">
       {fileData.map((file) => (
         <div
-          key={file.id}
+          key={file._id}
           className="mb-4 p-4 md:mb-6 md:p-6 border border-gray-300 rounded-lg dark:border-gray-600 shadow-lg dark:shadow-gray-800 bg-white dark:bg-gray-900"
         >
           {/* Video Display */}
@@ -120,7 +120,7 @@ function FileDisplay({ fileData, reload }) {
           )}
 
           {/* Conditional Update Mode */}
-          {editingFileId === file.id ? (
+          {editingFileId === file._id ? (
             <div>
               <input
                 type="text"
@@ -153,7 +153,7 @@ function FileDisplay({ fileData, reload }) {
           </p>
 
           {/* Action Buttons */}
-          <ReadDelete file={file} update={() => handleUpdate(file.id)} reload={reload} />
+          <ReadDelete file={file} update={() => handleUpdate(file._id)} reload={reload} />
         </div>
       ))}
     </div>
