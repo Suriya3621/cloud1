@@ -6,7 +6,7 @@ const FileSchema = new mongoose.Schema({
   url: { type: String, required: true, unique: true }, // Ensure URL is unique
   fileType: { type: String, required: true },
   fileSize: { type: String, required: true },
-  privates: { type: Boolean, default:true },
+  private: { type: Boolean, default:true },
   uploadDate: { type: Date, default: Date.now }
 });
 

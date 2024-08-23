@@ -6,9 +6,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+
 
 const Navbar = () => {
   const userData = useSelector((state) => state.user.value);

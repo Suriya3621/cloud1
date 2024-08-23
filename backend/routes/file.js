@@ -5,6 +5,37 @@ const { body, validationResult } = require('express-validator');
 const mime = require('mime-types');
 const urlValidator = require('valid-url');
 const mongoose = require('mongoose');
+const axios = require('axios');
+const { PassThrough } = require('stream');
+
+router.get("/download", async (req, res) => {
+  const fileUrl = req.query.url;
+  const fileName = req.query.name || 'downloaded_file'; // Default name if none is provided
+
+  if (!fileUrl) {
+    return res.status(400).json({ error: "File URL is required" });
+  }
+
+  try {
+    const response = await axios({
+      url: fileUrl,
+      method: 'GET',
+      responseType: 'stream'
+    });
+
+    // Set headers for download
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    res.setHeader('Content-Type', response.headers['content-type']);
+
+    // Pipe the file stream to the response
+    response.data.pipe(res);
+
+  } catch (error) {
+    console.error("Error downloading the file:", error);
+    res.status(500).send("Error downloading the file.");
+  }
+});
+
 
 // Extract file extension from URL
 function getFileExtensionFromUrl(url) {
@@ -75,12 +106,12 @@ router.put('/update/:id', async (req, res) => {
 
   try {
     const { id } = req.params;
-    const { name, privates } = req.body;
+    const { name, private } = req.body;
 
     // Find the file by ID and update it in one step
     const updatedFile = await FileUpload.findByIdAndUpdate(
       id,
-      { name, privates },
+      { name, private },
       { new: true, runValidators: true } // Options: return the updated document and run validators
     );
 
