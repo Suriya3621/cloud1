@@ -36,6 +36,28 @@ router.get("/download", async (req, res) => {
   }
 });
 
+router.get("/open/:id", async (req, res) => {
+  let id = req.params.id;
+  if(!id){
+   return res.status(400).send({
+      success:false,
+      message:"id required"
+    })
+  }
+  try{
+   let file = await FileUpload.findById(id)
+  res.status(200).send({
+      success:false,
+      file
+    })
+  }catch(err){
+    res.status(400).send({
+      success:false,
+     err
+    })
+  }
+  })
+
 
 // Extract file extension from URL
 function getFileExtensionFromUrl(url) {

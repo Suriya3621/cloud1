@@ -13,6 +13,7 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function ReadDelete({ file, update, reload }) {
   const dispatch = useDispatch();
+
   const deleteData = async () => {
     try {
       await deleteFile(file);
@@ -25,29 +26,41 @@ function ReadDelete({ file, update, reload }) {
 
   const downloadFile = async () => {
     try {
-      let finalName = ""
+      let finalName = "";
       let fileType = file.fileType;
-      let FileName = file.name.trim();
-      fileType = fileType.split("/");
-      if(fileType[0] === "application"){
-       console.log(fileType) 
-      }else{
-      finalName = FileName+"."+fileType[1]
+      let fileName = file.name.trim();
+
+      // Handle specific MIME types
+      const mimeExtensions = {
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation": "pptx",
+        // Add more MIME types and extensions as needed
+      };
+
+      // Determine the file extension based on the MIME type
+      if (mimeExtensions[fileType]) {
+        finalName = `${fileName}.${mimeExtensions[fileType]}`;
+      } else {
+        // Fallback for other types like images, videos, etc.
+        const fileTypeParts = fileType.split("/");
+        finalName = `${fileName}.${fileTypeParts[1]}`;
       }
+
       // Make a GET request to your backend to download the file
       const response = await axios.get(
         `${backendUrl}/file/download?url=${encodeURIComponent(file.url)}&name=${finalName}`,
-        { responseType: 'blob' } // Important to handle binary data
+        { responseType: "blob" } // Important to handle binary data
       );
 
       // Create a temporary link to trigger download
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', finalName);
+      link.setAttribute("download", finalName);
       document.body.appendChild(link);
       link.click();
-      link.remove();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error downloading file:", error);
     }
