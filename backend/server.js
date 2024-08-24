@@ -22,6 +22,9 @@ app.use(cors());
 connectDB();
 
 // Routes
+app.get("/",(req,res)=>{
+  res.send("Api is working")
+})
 app.use('/api', userRoutes);
 app.use('/api/file', fileRoutes);
 // Error handling middleware
