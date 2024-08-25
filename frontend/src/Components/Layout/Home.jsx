@@ -47,6 +47,7 @@ function Home() {
       } catch (error) {
         console.error('Error fetching data:', error);
         alert("Something went wrong. Please try again later.");
+        alert(backendUrl)
         setLoading(false);
       }
     };
