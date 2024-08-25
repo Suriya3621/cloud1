@@ -1,6 +1,7 @@
 // Firebase.js
 import { initializeApp } from "firebase/app";
 import { getStorage } from 'firebase/storage';
+//      uri: "./GOVERNMENT HIGH SCHOOL KALLANATHAM ( Student List ) _export_1719725328486.xlsx",
 
 // Firebase configuration using environment variables
 const firebaseConfig = {
