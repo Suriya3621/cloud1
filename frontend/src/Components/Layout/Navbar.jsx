@@ -12,7 +12,7 @@ const Navbar = () => {
   const userData = useSelector((state) => state.user.value);
   const [isOpen, setIsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches));
-  const [cookies, setCookie, removeCookie] = useCookies(['userId']);
+  const [cookies, , removeCookie] = useCookies(['userId']);
   const navigate = useNavigate();
 
   useEffect(() => {

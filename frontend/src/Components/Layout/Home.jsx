@@ -19,7 +19,7 @@ function Home() {
     otherData: []
   });
   const [searchQuery, setSearchQuery] = useState('');
-  const [uploading, setUploading] = useState(false);
+  const [, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [cookie] = useCookies(['userId']);
   const backendUrl = process.env.REACT_APP_BACKEND_URL;

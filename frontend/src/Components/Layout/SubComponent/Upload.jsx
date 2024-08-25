@@ -10,7 +10,7 @@ function Upload({ handleUploadBox, reload }) {
   const [nickname, setNickname] = useState('');
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
-  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupVisible, ] = useState(false);
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
