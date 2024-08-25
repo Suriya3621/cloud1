@@ -234,7 +234,13 @@ onChange={handleChange}
                 className="flex w-full justify-center rounded-3xl bg-violet-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-800 hover:outline-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 disabled={loading}
               >
-                {loading ? 'Signing up...' : 'Sign up'}
+                {loading ? (
+                  <svg className="animate-spin h-5 w-5 mr-3 text-gray-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-10" />
+  <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-white" />
+</svg>
+                  ) :null}
+                Sign up
               </button>
             </div>
           </form>

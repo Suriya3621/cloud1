@@ -9,6 +9,7 @@ import "../Styles/Auth.css";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorCode, setErrorCode] = useState(false);
+  const [loading, seLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [, setCookie] = useCookies(['userId']);
   const navigate = useNavigate(); 
@@ -27,13 +28,17 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      seLoading(true)
       const response = await axios.post(`${backendUrl}/login`, { password });
       const userId = response.data.user._id;
+      seLoading(false)
       setCookie('userId', userId, { path: '/' ,maxAge: cookieDays * 24 * 60 * 60 });
       navigate('/home'); // Redirect to /home
+      
     } catch (error) {
       console.error(error);
       setErrorCode(true);
+      seLoading(false)
     }
   };
 
@@ -99,6 +104,13 @@ export default function Login() {
                   type="submit"
                   className="flex shadow w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
+                {loading ? (
+<svg className="animate-spin h-5 w-5 mr-3 text-gray-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-10" />
+  <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-white" />
+</svg>
+                  ):null
+                }
                   Login
                 </button>
               </div>

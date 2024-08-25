@@ -108,7 +108,7 @@ const Navbar = () => {
         </div>
       </div>
       <hr />
-      <DisclosurePanel className="text-center bg-slate-100 dark:bg-slate-800 text-violet-600">
+      <DisclosurePanel className="text-center bg-slate-100 dark:bg-slate-800 dark:text-white text-violet-600">
         <div className="space-y-1 px-2 pb-3 pt-2">
           <Link to="/home" className="block rounded-md px-3 py-2 text-base dark:hover:bg-violet-400 dark:hover:text-white font-medium hover:bg-violet-200 hover:border-2 hover:border-violet-800">
             Home
