@@ -7,7 +7,7 @@ import { deleteFile, updateFile } from "./Filemanage";
 import { useDispatch } from "react-redux";
 import { setReload } from "../../../Slice/Reload";
 import axios from "axios";
-
+import {Link} from 'react-router-dom'
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 
@@ -77,8 +77,13 @@ function ReadDelete({ file, update, reload }) {
       <button onClick={downloadFile}>
         <MdOutlineFileDownload className="text-blue-500 text-2xl md:text-3xl hover:text-blue-600 cursor-pointer" />
       </button>
+      
       <FaShare className="text-blue-500 text-2xl md:text-3xl hover:text-blue-600 cursor-pointer" />
+     <Link to={`/open/${file._id}`}>
+      <button>
       <IoMdOpen className="text-gray-400 text-2xl md:text-3xl hover:text-black dark:text-gray-300 cursor-pointer" />
+      </button>
+     </Link>
     </div>
   );
 }
@@ -151,7 +156,7 @@ function FileDisplay({ fileData, reload }) {
   };
 
   if (fileData.length === 0) {
-    return <p>No files available</p>;
+    return <p className="text-white dark:text-black">No files available</p>;
   }
 
   return (
