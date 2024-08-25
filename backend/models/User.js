@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -19,7 +20,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter your password'],
         minlength: [6, 'Password must be at least 6 characters long'],
-        unique: true,
         select: false
     },
     avatar: {
@@ -34,7 +34,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-
 // Generate JWT token
 userSchema.methods.getJwtToken = function() {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
@@ -43,7 +42,9 @@ userSchema.methods.getJwtToken = function() {
 };
 
 // Compare passwords
-
+userSchema.methods.comparePassword = async function(candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+};
 
 // Generate password reset token
 userSchema.methods.getResetToken = function() {
@@ -53,4 +54,15 @@ userSchema.methods.getResetToken = function() {
     return token;
 };
 
-module.exports = mongoose.model('users', userSchema);
+// Hash password before saving
+userSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) {
+        return next();
+    }
+    
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
+
+module.exports = mongoose.model('User', userSchema);

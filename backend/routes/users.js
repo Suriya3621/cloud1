@@ -239,39 +239,37 @@ router.delete('/deleteallusers', async (req, res) => {
   }
 });
 
-// Login by password
+// Login by name and password
 router.post('/login', async (req, res) => {
-    const { password } = req.body;
+    const { name, password } = req.body;
+
+    console.log('Request Body:', req.body); // Add this line for debugging
+
+    if (!name || !password) {
+        return res.status(400).json({ success: false, message: 'Please provide both name and password' });
+    }
 
     try {
-        // Fetch all users
-        const users = await User.find().select('+password');
-
-        if (!users.length) {
-            return res.status(404).json({ success: false, message: 'No users found' });
+        const user = await User.findOne({ name }).select('+password');
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
         }
 
-        // Loop through users to find a match
-        let matchedUser = null;
-        for (const user of users) {
-            const isMatch = password === user.password
-            if (isMatch) {
-                matchedUser = user;
-                break;
-            }
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: 'Invalid credentials' });
         }
 
-        if (!matchedUser) {
-            return res.status(401).json({ success: false, message: 'Invalid password' });
-        }
+        const token = user.getJwtToken();
 
-        // Generate JWT token
-        const token = matchedUser.getJwtToken();
-        res.status(200).json({ success: true, token, user: matchedUser });
+        res.status(200).json({
+            success: true,
+            token,
+            user
+        });
     } catch (err) {
-        res.status(500).json({success: false, error: err.message });
+        console.error(err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
     }
 });
-
-
 module.exports = router;
