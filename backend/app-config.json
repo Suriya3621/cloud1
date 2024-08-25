@@ -1,17 +1,8 @@
 {
 	"command": "node server.js",
-	"build_path": "/data/data/com.termux/files/home/cloud/backend",
+	"build_path": "/data/data/com.termux/files/home/cloud1/backend",
 	"stack": "node18",
-	"env_variables": {
-		"PORT": "8000",
-		"MONGODB_URI": "mongodb+srv://Suriya:suriya3621@cluster0.5uetreb.mongodb.net/Cloud?retryWrites=true&w=majority&appName=Cluster0",
-		"SMTP_FROM_NAME": "Cloud upload password reset",
-		"SMTP_FROM_EMAIL": "suriyaprakashraja849@gmail.com",
-		"SMTP_USER": "suriyaprakashraja849@gmail.com",
-		"SMTP_PASS": "mesevgnjpnmwnncg",
-		"JWT_EXPIRES_TIME": "7",
-		"JWT_SECRET": "HS256"
-	},
+	"env_variables": {},
 	"memory": 256,
 	"scripts": {}
 }

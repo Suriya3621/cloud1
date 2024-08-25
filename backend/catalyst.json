@@ -1,8 +1,8 @@
 {
   "appsail": [
     {
-      "source": "/data/data/com.termux/files/home/cloud/backend",
-      "name": "Cloud"
+      "source": "/data/data/com.termux/files/home/cloud1/backend",
+      "name": "Cloud-backend"
     }
   ]
 }
