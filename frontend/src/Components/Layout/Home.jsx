@@ -4,12 +4,9 @@ import "../Styles/Home.css";
 import FileDisplay from './SubComponent/FileDisplay';
 import { useCookies } from 'react-cookie';
 import Upload from "./SubComponent/Upload";
-import { useDispatch } from 'react-redux';
-import { setUser } from '../../Slice/UserSlice.js'; // Correct import
-
+import Head from "../../App/Head"
 function Home() {
   const [reload, setReload] = useState(false);
-  const dispatch = useDispatch();
   const [uploadbtn, setUploadbtn] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [data, setData] = useState({
@@ -30,7 +27,6 @@ function Home() {
         setLoading(true);
         const userResponse = await axios.get(`${backendUrl}/${cookie.userId}`);
         let userData = userResponse.data.data;
-        dispatch(setUser(userData));
 
         const response = await axios.get(`${backendUrl}/file/findfile?username=${userData.name}`);
         const files = response.data.data;
@@ -53,7 +49,7 @@ function Home() {
     };
 
     fetchData();
-  }, [backendUrl, cookie.userId, reload, dispatch]);
+  }, [backendUrl, cookie.userId, reload]);
 
   const handleReload = () => {
     setReload((prev) => !prev); // Toggle reload state to trigger useEffect
@@ -109,13 +105,12 @@ function Home() {
 
   return (
     <div>
-      <br />
-      <br />
+   <Head title="Home" />
       <section className="light:bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
         <br />
         <header className="space-y-4 p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6 bg-white dark:bg-gray-900">
           <div className="flex items-center justify-between">
-            <h2 className="font-semibold">Projects</h2>
+            <h2 className="font-semibold">Files</h2>
             <button
               className="hover:bg-blue-400 group flex items-center rounded-md bg-blue-700 text-white text-sm font-medium pl-2 pr-3 py-2 shadow-sm dark:bg-blue-700"
             onClick={() => setUploadbtn((prev) => !prev)}

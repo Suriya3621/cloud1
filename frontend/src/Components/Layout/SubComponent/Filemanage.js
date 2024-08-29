@@ -22,6 +22,8 @@ export const deleteFile = async (filePath) => {
 
 export const updateFile = async (fileId, updatedData) => {
   try {
+    console.log(fileId)
+    console.log(updatedData)
     const response = await axios.put(`${backendUrl}/file/update/${fileId}`, updatedData);
     return response.data;
   } catch (error) {

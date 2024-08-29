@@ -6,15 +6,12 @@ import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-
-
 const Navbar = () => {
   const userData = useSelector((state) => state.user.value);
   const [isOpen, setIsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches));
   const [cookies, , removeCookie] = useCookies(['userId']);
   const navigate = useNavigate();
-
   useEffect(() => {
     if (darkMode) {
       localStorage.theme = 'dark';
@@ -31,7 +28,7 @@ const Navbar = () => {
   };
 
   return (
-    <Disclosure as="nav" className="dark:text-white absolute w-full z-40 bg-slate-100 text-black dark:bg-gray-800">
+    <Disclosure as="nav" className="nav-index dark:text-white absolute w-full z-40 bg-slate-100 text-black dark:bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center">
