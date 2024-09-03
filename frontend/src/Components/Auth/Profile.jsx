@@ -118,7 +118,7 @@ const Profile = () => {
                 <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">{userData.email}</p>
                 <div className="mt-6 flex">
                   <button
-                    className="w-full flex items-center justify-center gap-2 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-300 text-center"
+                    className="w-full flex justify-center gap-2 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-300 text-center"
                     onClick={() => setIsEditing(true)}
                   >
                     <FaEdit className="text-lg" />
