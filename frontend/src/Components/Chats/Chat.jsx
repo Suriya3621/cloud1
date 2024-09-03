@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Styles/Chat.css";
-
+import Head from "../../App/Head"
 let chats = [
   {
     "_id": "1",
@@ -72,6 +72,7 @@ export default function Chat() {
   let UserName = "suriya";
   return (
     <div className="text-white scroll-smooth container-90">
+     <Head title="Chat" />
       <br />
       <br />
       <div>

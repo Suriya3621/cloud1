@@ -39,14 +39,15 @@ export default function Login() {
 
     try {
       setLoading(true);
-      const response = await axios.post(`${backendUrl}/login`, { name, password });
+      const response = await axios.post(`${backendUrl}/login`, { name:name.trim(), password:password.trim() });
+     console.log(response)
       const userId = response.data.user._id;
       setLoading(false);
       setCookie('userId', userId, { path: '/', maxAge: cookieDays * 24 * 60 * 60 });
       navigate('/home'); // Redirect to /home
     } catch (error) {
       console.error(error);
-      setErrorCode('Incorrect password or user not found. Please try again.');
+      setErrorCode('Incorrect password or user name, user not found. Please try again.');
       setLoading(false);
     }
   };
