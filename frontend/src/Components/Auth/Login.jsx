@@ -39,7 +39,7 @@ export default function Login() {
 
     try {
       setLoading(true);
-      const response = await axios.post(`${backendUrl}/login`, { name:name.trim(), password:password.trim() });
+      const response = await axios.post(`${backendUrl}/login`, { name:name, password:password });
      console.log(response)
       const userId = response.data.user._id;
       setLoading(false);
@@ -53,7 +53,7 @@ export default function Login() {
   };
 
   const handleForgotPassword = () => {
-    // Handle password reset logic here
+    navigate("/forgot-password")
   };
 
   return (

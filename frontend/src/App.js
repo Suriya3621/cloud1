@@ -11,6 +11,9 @@ import Contact from "./Components/Layout/Contact";
 import Preview from "./Components/Layout/SubComponent/Preview";
 import Chat from "./Components/Chats/Chat.jsx";
 import Profile from "./Components/Auth/Profile"
+import ForgotPassword from "./Components/Auth/ForgotPassword";
+import ResetPassword from "./Components/Auth/ResetPassword";
+
 import axios from 'axios';
 import { setUser } from './Slice/UserSlice.js';
 
@@ -42,12 +45,13 @@ function App() {
       dispatch(setUser(userData));
     } catch (error) {
       console.error('Error fetching user:', error);
+    console.log(error)
     }
   }, [backendUrl, cookies.userId, dispatch]);
 
   useEffect(() => {
     if (cookies.userId) {
-      fetchUser(); // Safe to call it now since it's memoized
+      fetchUser(); 
     }
   }, [cookies.userId, fetchUser]); // fetchUser is now safe to include in the dependency array
 
@@ -61,13 +65,15 @@ function App() {
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/signup" element={<RedirectRoute element={Signup} />} />
         <Route path="/login" element={<RedirectRoute element={Login} />} />
+        <Route path="/forgot-password" element={<RedirectRoute element={ForgotPassword} />} />
+        <Route path="/resetpassword/:token" element={<RedirectRoute element={ResetPassword} />} />
         <Route path="/profile" element={<ProtectedRoute element={Profile} />} />
         <Route path="/home" element={<ProtectedRoute element={Home} />} />
         <Route path="/chat" element={<ProtectedRoute element={Chat} />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/open/:id" element={<Preview />} />
-        <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+        <Route path="*" element={<><br /><br /><br /><h1>404 - Page Not Found</h1></> } />
       </Routes>
     </>
   );

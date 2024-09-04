@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
-import { FaEdit, FaSave } from "react-icons/fa";
+import { FaEdit, FaSave, FaTrashAlt } from "react-icons/fa";
 import { CSSTransition } from 'react-transition-group';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Profile = () => {
   const [cookies] = useCookies(['userId']);
@@ -14,8 +15,10 @@ const Profile = () => {
   const [editData, setEditData] = useState({
     name: '',
     email: '',
-    avatar: ''
   });
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -31,7 +34,6 @@ const Profile = () => {
         setEditData({
           name: data.data.name,
           email: data.data.email,
-          avatar: data.data.avatar
         });
       } catch (err) {
         console.error(err);
@@ -52,13 +54,67 @@ const Profile = () => {
     });
   };
 
+  const handleAvatarChange = (e) => {
+    setAvatarFile(e.target.files[0]);
+  };
+
+  const uploadAvatar = async () => {
+    if (!avatarFile) return null;
+
+    const storage = getStorage();
+    const storageRef = ref(storage, `avatars/${cookies.userId}`);
+    const uploadTask = uploadBytesResumable(storageRef, avatarFile);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        'state_changed',
+        null,
+        (error) => {
+          console.error("Failed to upload avatar:", error);
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
+  };
+
   const handleSave = async () => {
+    setIsSaving(true);
     try {
-      const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/${cookies.userId}`, editData);
+      let avatarUrl = userData.avatar;
+
+      if (avatarFile) {
+        avatarUrl = await uploadAvatar();
+      }
+
+      const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/${cookies.userId}`, {
+        ...editData,
+        avatar: avatarUrl
+      });
+
       setUserData(data.data);
       setIsEditing(false);
     } catch (err) {
       console.error('Failed to update user data:', err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setIsSaving(true);
+    try {
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/${cookies.userId}`);
+      window.location.href = '/';
+    } catch (err) {
+      console.error('Failed to delete user account:', err);
+      setError('Failed to delete your account. Please try again.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -78,10 +134,10 @@ const Profile = () => {
             <img
               src={userData.avatar}
               alt={`${userData.name}'s avatar`}
-              className="w-32 h-28 rounded-full shadow-lg mb-4"
+              className="w-28 h-28 rounded-full shadow-lg mb-4"
             />
             {isEditing ? (
-              <div className="w-full">
+              <div className="w-full dark:text-white">
                 <input
                   type="text"
                   name="name"
@@ -97,17 +153,22 @@ const Profile = () => {
                   className="w-full p-2 rounded-lg mb-4 border dark:bg-gray-700 dark:border-gray-600"
                 />
                 <input
-                  type="text"
+                  type="file"
                   name="avatar"
-                  value={editData.avatar}
-                  onChange={handleInputChange}
+                  onChange={handleAvatarChange}
                   className="w-full p-2 rounded-lg mb-4 border dark:bg-gray-700 dark:border-gray-600"
-                  placeholder="Avatar URL"
                 />
                 <button
                   className="w-full flex items-center justify-center gap-2 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg shadow-md transition duration-300 text-center"
                   onClick={handleSave}
+                  disabled={isSaving}
                 >
+                  {isSaving && (
+                    <svg className="animate-spin h-5 w-5 mr-3 text-gray-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-10" />
+                      <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-white" />
+                    </svg>
+                  )}
                   <FaSave className="text-lg" />
                   <span>Save Changes</span>
                 </button>
@@ -116,7 +177,7 @@ const Profile = () => {
               <>
                 <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">{userData.name}</h1>
                 <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">{userData.email}</p>
-                <div className="mt-6 flex">
+                <div className="mt-6 flex w-full">
                   <button
                     className="w-full flex justify-center gap-2 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-300 text-center"
                     onClick={() => setIsEditing(true)}
@@ -124,18 +185,54 @@ const Profile = () => {
                     <FaEdit className="text-lg" />
                     <span>Edit Profile</span>
                   </button>
-                  <button className="w-full flex items-center justify-center gap-2 py-2 bg-red-500 text-white rounded-lg shadow-md transition duration-300 text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                    </svg>
-                    <span>Delete</span>
-                  </button>
                 </div>
               </>
             )}
+            {/* Delete Button */}
+            <div className="mt-4 w-full">
+              <button
+                className="w-full flex justify-center gap-2 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-md transition duration-300 text-center"
+                onClick={() => setIsDeleteModalOpen(true)}
+                disabled={isSaving}
+              >
+                <FaTrashAlt className="text-lg" />
+                <span>Delete Account</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Confirm Delete</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">Are you sure you want to delete your account? This action cannot be undone.</p>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg"
+                onClick={() => setIsDeleteModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
+                onClick={handleDelete}
+                disabled={isSaving}
+              >
+{isSaving && (
+                  <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-10" />
+                    <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-red-500" />
+                  </svg>
+                )}
+                <span>Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </CSSTransition>
   );
 };

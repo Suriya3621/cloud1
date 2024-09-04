@@ -14,8 +14,7 @@ router.post('/forgotpassword', async (req, res) => {
 
         const resetToken = user.getResetToken();
         await user.save();
-
-        const resetUrl = `${req.protocol}://${req.get('host')}/api/resetpassword/${resetToken}`;
+        const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
 
         const html = `
   <!DOCTYPE html>
@@ -57,6 +56,8 @@ router.post('/forgotpassword', async (req, res) => {
       <a href="${resetUrl}" class="btn-for-reset">
         Click here to Reset Password
       </a>
+      <p>If this button is not working,Click this:</pi
+      ${resetUrl}
     </p>
     <p>If you didn't request a password reset, please ignore this email.</p>
     <p>Thank you,</p>
@@ -80,18 +81,20 @@ router.post('/forgotpassword', async (req, res) => {
 
 router.put('/resetpassword/:token', async (req, res) => {
     const { token } = req.params;
-    const { password } = req.body;
-
+    const { password,confirmPassword } = req.body;
+ if (password != confirmPassword){
+   return res.status(400).json({success:false,error:"Please enter same character twice the box"})
+ }
     try {
         const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-
+console.log(hashedToken)
         const user = await User.findOne({
             resetPasswordToken: hashedToken,
             resetPasswordTokenExpire: { $gt: Date.now() }
         });
 
         if (!user) return res.status(400).json({ success: false, message: 'Token is invalid or has expired' });
-
+console.log(user)
         user.password = password;
         user.resetPasswordToken = undefined;
         user.resetPasswordTokenExpire = undefined;

@@ -22,11 +22,15 @@ app.use(cors());
 connectDB();
 
 // Routes
-app.get("/",(req,res)=>{
-  res.send("Api is working")
-})
+app.get("/", (req, res) => {
+  res.json({"msg": "API is working"});
+});
+app.get("/api", (req, res) => {
+  res.json({"msg": "API is working"});
+});
 app.use('/api', userRoutes);
 app.use('/api/file', fileRoutes);
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -34,6 +38,7 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.X_ZOHO_CATALYST_LISTEN_PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const host = 'localhost'; // or '127.0.0.1' for localhost
+app.listen(PORT, host, () => {
+  console.log(`Server is running on http://${host}:${PORT}`);
 });
