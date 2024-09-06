@@ -11,6 +11,7 @@ import Contact from "./Components/Layout/Contact";
 import Preview from "./Components/Layout/SubComponent/Preview";
 import Chat from "./Components/Chats/Chat.jsx";
 import Profile from "./Components/Auth/Profile"
+import Settings  from "./Components/Layout/Settings"
 import ForgotPassword from "./Components/Auth/ForgotPassword";
 import ResetPassword from "./Components/Auth/ResetPassword";
 
@@ -71,6 +72,7 @@ function App() {
         <Route path="/home" element={<ProtectedRoute element={Home} />} />
         <Route path="/chat" element={<ProtectedRoute element={Chat} />} />
         <Route path="/about" element={<About />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/open/:id" element={<Preview />} />
         <Route path="*" element={<><br /><br /><br /><h1>404 - Page Not Found</h1></> } />

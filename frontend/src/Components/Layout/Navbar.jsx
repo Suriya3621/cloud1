@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { CiDark, CiLight } from 'react-icons/ci';
+import { CiDark, CiLight, CiSettings } from 'react-icons/ci';
 import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { CgLogOut } from "react-icons/cg";
 
 const Navbar = () => {
   const userData = useSelector((state) => state.user.value);
@@ -76,12 +77,15 @@ const Navbar = () => {
                   className="h-10 w-10 bg-transparent rounded-full"
                 />
               </MenuButton>
-              <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right bg-slate-200 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+              <MenuItems className="absolute right-0 z-30 mt-2 w-48 origin-top-right bg-slate-200 dark:text-white dark:bg-slate-700 rounded-md  py-1 shadow-lg ring-1 ring-black ring-opacity-5">
                 {cookies.userId ? (
                   <>
                     <MenuItem>
-                      <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        Your Profile
+                      <Link to="/profile" className="block px-4 py-2 text-sm  hover:bg-gray-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4 float-left size-5">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+</svg>
+  Your Profile
                       </Link>
                     </MenuItem>
                     <MenuItem>
@@ -89,14 +93,15 @@ const Navbar = () => {
                         onClick={handleLogout}
                         className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
                       >
-                        Sign out
+                        <CgLogOut className="float-left size-5"/>Sign out
                       </button>
                     </MenuItem>
                   </>
                 ) : null}
+                <hr />
                 <MenuItem>
-                  <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Settings
+                  <Link to="/settings" className="block px-4 py-2 text-sm  hover:bg-gray-100">
+                   <CiSettings className="float-left size-6"/> Settings
                   </Link>
                 </MenuItem>
               </MenuItems>

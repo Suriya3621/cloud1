@@ -28,7 +28,7 @@ function Home() {
         const userResponse = await axios.get(`${backendUrl}/${cookie.userId}`);
         let userData = userResponse.data.data;
 
-        const response = await axios.get(`${backendUrl}/file/findfile?username=${userData.name}`);
+        const response = await axios.get(`${backendUrl}/file/findfile?id=${userData._id}`);
         const files = response.data.data;
 
         const categorizedData = {

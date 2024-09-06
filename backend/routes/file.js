@@ -67,7 +67,7 @@ function getFileExtensionFromUrl(url) {
 
 // Upload a new file
 router.post('/uploadFile', [
-  body('username').isString().notEmpty().trim().escape(),
+  body('id').isString().notEmpty().trim().escape(),
   body('name').isString().notEmpty().trim().escape(),
   body('url').isString().notEmpty().custom(value => {
     if (!urlValidator.isUri(value)) {
@@ -97,6 +97,18 @@ router.post('/uploadFile', [
   }
 });
 
+router.get('/findfile', async (req, res) => {
+  try {
+    const { id } = req.query;
+    const files = await FileUpload.find({ id });
+    console.log(files)
+    res.status(200).send({ success: true, data: files });
+  } catch (err) {
+    console.error('Error fetching files:', err);
+    res.status(500).send({ success: false, error: err.message });
+  }
+});
+
 router.get('/allfiles', async (req, res) => {
   try {
     const files = await FileUpload.find({});
@@ -107,16 +119,6 @@ router.get('/allfiles', async (req, res) => {
   }
 });
 
-router.get('/findfile', async (req, res) => {
-  try {
-    const { username } = req.query;
-    const files = await FileUpload.find({ username });
-    res.status(200).send({ success: true, data: files });
-  } catch (err) {
-    console.error('Error fetching files:', err);
-    res.status(500).send({ success: false, error: err.message });
-  }
-});
 
 // Update file
 router.put('/update/:id', async (req, res) => {

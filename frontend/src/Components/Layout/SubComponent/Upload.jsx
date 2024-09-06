@@ -32,7 +32,7 @@ function Upload({ handleUploadBox, reload }) {
     setUploading(true);
     handleUploadBox(false, true); // Hide upload box and show loading popup
 
-    const fileRef = ref(storage, `uploads/${userData.name}/${Date.now()}_${file.name}`);
+    const fileRef = ref(storage, `uploads/${userData._id}/${Date.now()}_${file.name}`);
     try {
       await uploadBytes(fileRef, file);
       const downloadURL = await getDownloadURL(fileRef);
@@ -45,7 +45,7 @@ function Upload({ handleUploadBox, reload }) {
       };
 
       const fileData = {
-        username: userData.name.trim(),
+        id: userData._id.trim(),
         name: nickname.trim() || file.name,
         url: downloadURL,
         fileSize: formatFileSize(file.size),
