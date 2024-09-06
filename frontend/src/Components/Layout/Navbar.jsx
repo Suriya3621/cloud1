@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { CiDark, CiLight, CiSettings } from 'react-icons/ci';
+import { CiSettings } from 'react-icons/ci';
 import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -10,18 +10,8 @@ import { CgLogOut } from "react-icons/cg";
 const Navbar = () => {
   const userData = useSelector((state) => state.user.value);
   const [isOpen, setIsOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches));
   const [cookies, , removeCookie] = useCookies(['userId']);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (darkMode) {
-      localStorage.theme = 'dark';
-      document.documentElement.classList.add('dark');
-    } else {
-      localStorage.theme = 'light';
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
 
   const handleLogout = () => {
     removeCookie('userId', { path: '/' });
@@ -51,13 +41,6 @@ const Navbar = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            {/* Dark Mode Toggle */}
-            <button
-              className="bg-transparent dark:text-white text-black text-2xl p-1"
-              onClick={() => setDarkMode(prev => !prev)}
-            >
-              {darkMode ? <CiLight /> : <CiDark />}
-            </button>
 
             {/* Notification Bell */}
             <button
