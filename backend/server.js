@@ -38,7 +38,6 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.X_ZOHO_CATALYST_LISTEN_PORT || 8000;
-const host = 'localhost'; // or '127.0.0.1' for localhost
-app.listen(PORT, host, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on http://${host}:${PORT}`);
 });
