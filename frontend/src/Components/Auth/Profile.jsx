@@ -146,7 +146,7 @@ const handleDelete = async () => {
     setIsSaving(false);
   }
 };
-  if (isLoading) return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  if (isLoading) return <div className="flex items-center justify-center dark:text-white text-4xl h-screen">Loading...</div>;
   if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (

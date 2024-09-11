@@ -33,11 +33,25 @@ function Preview() {
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return (
+      <div>
+      <br />
+      <h1 className="text-red-600 font-bold">
+      {error}
+      </h1>
+      </div>
+      )
   }
 
   if (!fileData) {
-    return <div>No file available to preview.</div>;
+    return (
+      <div>
+      <br />
+      <h1>
+      No file available to preview.
+      </h1>
+      </div>
+      )
   }
 
   const downloadFile = async (file) => {

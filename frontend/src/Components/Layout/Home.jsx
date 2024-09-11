@@ -7,6 +7,7 @@ import Upload from "./SubComponent/Upload";
 import Head from "../../App/Head"
 function Home() {
   const [reload, setReload] = useState(false);
+  const [msg, setMsg] = useState("");
   const [uploadbtn, setUploadbtn] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [data, setData] = useState({
@@ -98,11 +99,11 @@ function Home() {
 
   const dataToDisplay = getDataForCategory(selectedCategory);
 
-  const uploadingHandling = (uploadBox, uploadingStage) => {
+  const uploadingHandling = (uploadBox, uploadingStage,message) => {
     setUploadbtn(uploadBox);
     setUploading(uploadingStage);
+    setMsg(message)
   };
-
   return (
     <div>
    <Head title="Home" />
@@ -129,6 +130,11 @@ function Home() {
               </div>
             )}
           </div>
+        {msg && (
+<div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
+  <p class="font-bold">{msg}</p>
+</div>
+          )}
           <form className="group relative">
             <svg
               width="20"

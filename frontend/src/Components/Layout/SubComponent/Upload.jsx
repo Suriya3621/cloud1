@@ -34,9 +34,10 @@ function Upload({ handleUploadBox, reload }) {
 
     const fileRef = ref(storage, `uploads/${userData._id}/${Date.now()}_${file.name}`);
     try {
+    let msg = "File is uploading"
+     handleUploadBox(false, true,msg); // Hide upload box and show loading popup
       await uploadBytes(fileRef, file);
       const downloadURL = await getDownloadURL(fileRef);
-
       const formatFileSize = (sizeInBytes) => {
         if (sizeInBytes === 0) return '0 Bytes';
         const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -56,12 +57,15 @@ function Upload({ handleUploadBox, reload }) {
       setFile(null);
       setNickname('');
       reload();
+      msg = "File uploaded successfully"
+      handleUploadBox(false, true ,msg); // Hide loading popup
     } catch (error) {
       console.error('Error uploading file:', error);
       setMessage('Failed to upload file, please try again.');
     } finally {
       setUploading(false);
-      handleUploadBox(false, false); // Hide loading popup
+      let msg;
+      handleUploadBox(false, false,msg); // Hide loading popup
     }
   };
 

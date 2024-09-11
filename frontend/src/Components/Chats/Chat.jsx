@@ -1,6 +1,8 @@
 import React from 'react';
 import "./Styles/Chat.css";
 import Head from "../../App/Head"
+
+/*
 let chats = [
   {
     "_id": "1",
@@ -67,14 +69,16 @@ function fileDisplay(id) {
     </div>
   );
 }
-
+*/
 export default function Chat() {
-  let UserName = "suriya";
+//  let UserName = "suriya";
   return (
     <div className="text-white scroll-smooth container-90">
-     <Head title="Chat" />
+     <Head title="Chat is Comming soon" />
+     <br />
       <br />
-      <br />
+      <h1 className="flex items-center justify-center">Commig Soon </h1>
+   {/*
       <div>
         {chats.map((value) => (
           <div key={value._id}>
@@ -110,6 +114,8 @@ export default function Chat() {
           </div>
         </div>
       </div>
+  */ 
+  }
     </div>
   );
 }

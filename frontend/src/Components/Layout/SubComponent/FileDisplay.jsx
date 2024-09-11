@@ -7,7 +7,8 @@ import { deleteFile, updateFile } from "./Filemanage";
 import { useDispatch } from "react-redux";
 import { setReload } from "../../../Slice/Reload";
 import axios from "axios";
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 
@@ -159,7 +160,7 @@ function FileDisplay({ fileData, reload }) {
   };
 
   if (fileData.length === 0) {
-    return <p className="text-white dark:text-black">No files available</p>;
+    return <p className="text-slate-900 text-4xl text-center dark:text-slate-200">No one available!</p>;
   }
 
   return (
