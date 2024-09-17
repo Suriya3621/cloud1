@@ -90,9 +90,7 @@ const Navbar = () => {
           <Link to="/home" className="block rounded-md px-3 py-2 text-base dark:hover:bg-violet-400 dark:hover:text-white font-medium hover:bg-violet-200 hover:border-2 hover:border-violet-800">
             Home
           </Link>
-          <Link to="/public/social-view" className="block rounded-md px-3 py-2 text-base font-medium dark:hover:bg-violet-400 dark:hover:text-white hover:bg-violet-200 hover:border-2 hover:border-violet-800">
-            Social View
-          </Link>
+
           <Link to="/about" className="block rounded-md px-3 py-2 text-base font-medium hover:bg-violet-200 dark:hover:bg-violet-400 dark:hover:text-white hover:border-2 hover:border-violet-800">
             About
           </Link>

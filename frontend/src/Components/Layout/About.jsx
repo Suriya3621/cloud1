@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export default function About() {
   return (
     <div className="dark:bg-gray-800 dark:text-white p-8">
-      <h1 className="text-center text-4xl font-bold txt mb-6">Welcome to Our Cloud Upload Platform</h1>
+      <h1 className="text-center text-4xl font-bold txt mb-6">Welcome to Our Cloud Storage Platform</h1>
       
       <section className="mb-8">
         <h2 className="text-3xl font-semibold mb-4">What We Do</h2>
@@ -31,13 +31,14 @@ export default function About() {
           <li>Scalable storage options to meet your growing needs.</li>
         </ul>
       </section>
-
+{/*
       <section>
         <h2 className="text-3xl font-semibold mb-4">Connect With Us</h2>
         <p className="text-lg leading-relaxed">
           Have any questions or need support? Our team is here to help. Visit our <Link to="/contact" className="text-blue-500 hover:underline">Contact</Link> page to get in touch.
         </p>
       </section>
+*/}
     </div>
   );
 }

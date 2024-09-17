@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { Route, Routes, Navigate ,Link} from 'react-router-dom';
-import { TiSocialAtCircular } from "react-icons/ti";
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Login from "./Components/Auth/Login";
 import Signup from "./Components/Auth/Signup";
@@ -14,7 +13,6 @@ import Profile from "./Components/Auth/Profile"
 import Settings  from "./Components/Layout/Settings"
 import ForgotPassword from "./Components/Auth/ForgotPassword";
 import ResetPassword from "./Components/Auth/ResetPassword";
-import Social from "./Components/Layout/Social"
 import axios from 'axios';
 import { setUser } from './Slice/UserSlice.js';
 
@@ -74,13 +72,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/:id" element={<Preview />} />
-        <Route path="/public/social-view" element={<Social />} />
       </Routes>
-    <Link to="/public/social-view" >
-    <div className="bg-slate-50 text-3xl p-5 fixed right-2 bottom-10 z-50 w-fit h-fit rounded-full">
-    <TiSocialAtCircular />
-    </div>
-    </Link>
     </div>
     )
 }
