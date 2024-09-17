@@ -34,7 +34,7 @@ function Upload({ handleUploadBox, reload }) {
 
     const fileRef = ref(storage, `uploads/${userData._id}/${Date.now()}_${file.name}`);
     try {
-    let msg = "File is uploading"
+    let msg = "File is uploading...."
      handleUploadBox(false, true,msg); // Hide upload box and show loading popup
       await uploadBytes(fileRef, file);
       const downloadURL = await getDownloadURL(fileRef);

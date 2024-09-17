@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { CiSettings } from 'react-icons/ci';
 import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from 'react-router-dom';
@@ -41,14 +41,6 @@ const Navbar = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-
-            {/* Notification Bell */}
-            <button
-              className="relative rounded-full dark:bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-            >
-              <span className="sr-only">View notifications</span>
-              <BellIcon className="h-6 w-6" aria-hidden="true" />
-            </button>
 
             {/* Profile dropdown */}
             <Menu as="div" className="relative">
@@ -97,9 +89,6 @@ const Navbar = () => {
         <div className="space-y-1 px-2 pb-3 pt-2">
           <Link to="/home" className="block rounded-md px-3 py-2 text-base dark:hover:bg-violet-400 dark:hover:text-white font-medium hover:bg-violet-200 hover:border-2 hover:border-violet-800">
             Home
-          </Link>
-          <Link to="/chat" className="block rounded-md px-3 py-2 text-base font-medium dark:hover:bg-violet-400 dark:hover:text-white hover:bg-violet-200 hover:border-2 hover:border-violet-800">
-            Chat
           </Link>
           <Link to="/public/social-view" className="block rounded-md px-3 py-2 text-base font-medium dark:hover:bg-violet-400 dark:hover:text-white hover:bg-violet-200 hover:border-2 hover:border-violet-800">
             Social View

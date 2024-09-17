@@ -18,10 +18,10 @@ export default function ForgotPassword() {
       console.log(err)
     }
   }
-  return (
-    <div className="w-full max-w-md px-4 dark:text-white text-black">
+  return (<>
       <br />
       <br />
+    <div className="w-full flex justify-center items-center text-center max-w-md px-4 dark:text-white text-black">
       <div>
         <label className="text-sm font-medium ">Email</label>
         <p className="text-sm dark:text-white/50 text-black/50">
@@ -96,6 +96,7 @@ export default function ForgotPassword() {
           ):null
         }
       </div>
+    
     </div>
-  );
+  </>);
 }

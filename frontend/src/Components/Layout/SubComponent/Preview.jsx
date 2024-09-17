@@ -17,6 +17,7 @@ function Preview() {
       try {
         const response = await axios.get(`${backendUrl}/file/open/${id}`);
         setFileData(response.data.file);
+        setName(response.data.file.name)
       } catch (err) {
         console.error(err);
         setError("Failed to load file data. Please try again.");
@@ -100,8 +101,18 @@ function Preview() {
   };
 
   return (
-    <div className="z-50 flex justify-center items-center text-center">
+    <>
+    <br />
+    <br />
+    <br />
+    <div className="z-50 p-0.5 flex justify-center items-center text-center">
       <div className="mb-4 p-4 md:mb-6 md:p-6 border border-gray-300 rounded-lg dark:border-gray-600 shadow-lg dark:shadow-gray-800 bg-white dark:bg-gray-900">
+        {/* Display the file name before downloading */}
+        <h1 className="text-2xl font-bold dark:text-white">{name}</h1>
+        
+        <button onClick={() => downloadFile(fileData)}>
+          <MdOutlineFileDownload className="text-blue-500 text-2xl md:text-3xl hover:text-blue-600 cursor-pointer" />
+        </button>
         {fileData.fileType.startsWith("video") && (
           <div className="mb-4 rounded overflow-x-hidden">
             <video src={fileData.url} controls className="w-full h-auto rounded-lg shadow-md">
@@ -123,16 +134,10 @@ function Preview() {
             </audio>
           </div>
         )}
-
-        {/* Display the file name before downloading */}
-        <h1>{name}</h1>
-        
-        <button onClick={() => downloadFile(fileData)}>
-          <MdOutlineFileDownload className="text-blue-500 text-2xl md:text-3xl hover:text-blue-600 cursor-pointer" />
-        </button>
       </div>
     </div>
-  );
+ </>
+ );
 }
 
 export default Preview;

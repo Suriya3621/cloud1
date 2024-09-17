@@ -9,7 +9,7 @@ export default function ResetPassword() {
   const { token } = useParams(); // Access the token from the URL
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [msg, setMsg] = useState('Successfully changed the password');
+  const [msg, setMsg] = useState('');
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
 
   const handleChangePassword = async () => {
@@ -26,7 +26,7 @@ export default function ResetPassword() {
       });
 
       if (response.status === 200) {
-        setMsg('Successfully changed the password');
+        setMsg(response.data.message);
       } else {
         setMsg(response.data.message);
       }
@@ -36,10 +36,10 @@ export default function ResetPassword() {
     }
   };
 
-  return (
-    <div className="w-full max-w-md px-4 dark:text-white text-black">
+  return (<>
       <br />
       <br />
+    <div className="w-full flex justify-center items-center text-center max-w-md px-4 dark:text-white text-black">
       <div>
         <label className="text-sm font-medium">Change password</label>
         <p className="text-sm dark:text-white/50 text-black/50">
@@ -85,12 +85,12 @@ export default function ResetPassword() {
         {msg && (
           <div>
             <p className="text-green-500">{msg}</p>
-            {msg === 'Successfully changed the password' && (
+            {msg === 'Password reset successfully' && (
               <img src="https://firebasestorage.googleapis.com/v0/b/cloud-upload12.appspot.com/o/done.png?alt=media&token=4ccf39ff-17e3-4544-8c67-279bbb2fcdcd" className="flex justify-center w-1/2 h-1/2" alt="Success" />
             )}
           </div>
         )}
       </div>
     </div>
-  );
+  </>);
 }

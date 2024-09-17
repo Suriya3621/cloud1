@@ -118,6 +118,15 @@ router.get('/allfiles', async (req, res) => {
     res.status(500).send({ success: false, error: err.message });
   }
 });
+router.get('/public', async (req, res) => {
+  try {
+    const files = await FileUpload.find({private:false});
+    res.status(200).send({ success: true, data: files });
+  } catch (err) {
+    console.error('Error fetching files:', err);
+    res.status(500).send({ success: false, error: err.message });
+  }
+});
 
 
 // Update file
