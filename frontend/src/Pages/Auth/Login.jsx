@@ -61,7 +61,7 @@ export default function Login() {
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           alt="Cloud store"
-          src="./image/cloud_login.png"
+          src="https://firebasestorage.googleapis.com/v0/b/cloud-upload12.appspot.com/o/Accets%2Fcloud_login.png?alt=media&token=c1cb55bf-145b-432f-b3c5-5dbd975238f8"
           className="mx-auto h-40 w-auto"
         />
       </div>

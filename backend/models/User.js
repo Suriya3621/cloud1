@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: "./image/defaultUser.png"
+        default: "https://firebasestorage.googleapis.com/v0/b/cloud-upload12.appspot.com/o/Accets%2FdefaultUser.png?alt=media&token=791972fb-5300-417f-9033-a0496acea456"
     },
     resetPasswordToken: String,
     resetPasswordTokenExpire: Date,

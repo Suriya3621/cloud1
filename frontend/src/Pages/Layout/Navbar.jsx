@@ -49,7 +49,7 @@ const Navbar = () => {
                 <span className="sr-only">Open user menu</span>
                 <img
                   alt="User avatar"
-                  src={userData?.avatar || "/image/cloud_login.png"}
+                  src={userData?.avatar || "https://firebasestorage.googleapis.com/v0/b/cloud-upload12.appspot.com/o/Accets%2Fcloud_login.png?alt=media&token=c1cb55bf-145b-432f-b3c5-5dbd975238f8"}
                   className="h-10 w-10 bg-transparent rounded-full"
                 />
               </MenuButton>
