@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { CiSettings } from 'react-icons/ci';
 import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { CgLogOut } from "react-icons/cg";
+import { FaBars } from "react-icons/fa";
+import { FaXmark } from "react-icons/fa6";
 
 const Navbar = () => {
   const userData = useSelector((state) => state.user.value);
@@ -29,9 +30,9 @@ const Navbar = () => {
             >
               <span className="sr-only">Open main menu</span>
               {isOpen ? (
-                <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                <FaXmark className="block h-6 w-6" aria-hidden="true" />
               ) : (
-                <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                <FaBars className="block h-6 w-6" aria-hidden="true" />
               )}
             </DisclosureButton>
           </div>
@@ -56,27 +57,27 @@ const Navbar = () => {
                 {cookies.userId ? (
                   <>
                     <MenuItem>
-                      <Link to="/profile" className="block px-4 py-2 text-sm  hover:bg-gray-100">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4 float-left size-5">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-</svg>
-  Your Profile
+                      <Link to="/profile" className="block dark:hover:bg-gray-700 px-4 py-2 text-sm  hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4 float-left size-5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
+                        Your Profile
                       </Link>
                     </MenuItem>
                     <MenuItem>
                       <button
                         onClick={handleLogout}
-                        className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                        className="block dark:hover:bg-gray-700 w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
                       >
-                        <CgLogOut className="float-left size-5"/>Sign out
+                        <CgLogOut className="float-left size-5" />Sign out
                       </button>
                     </MenuItem>
                   </>
                 ) : null}
                 <hr />
                 <MenuItem>
-                  <Link to="/settings" className="block px-4 py-2 text-sm  hover:bg-gray-100">
-                   <CiSettings className="float-left size-6"/> Settings
+                  <Link to="/settings" className="block px-4 py-2 text-sm dark:hover:bg-gray-700 hover:bg-gray-100">
+                    <CiSettings className="float-left size-6" /> Settings
                   </Link>
                 </MenuItem>
               </MenuItems>
@@ -85,14 +86,19 @@ const Navbar = () => {
         </div>
       </div>
       <hr />
-      <DisclosurePanel className="text-center bg-slate-100 dark:bg-slate-800 dark:text-white text-violet-600">
+
+      <DisclosurePanel className="text-center border border-white rounded-2xl md:absolute md:w-96 bg-slate-100 dark:bg-slate-800 dark:text-white text-violet-600">
         <div className="space-y-1 px-2 pb-3 pt-2">
           <Link to="/home" className="block rounded-md px-3 py-2 text-base dark:hover:bg-violet-400 dark:hover:text-white font-medium hover:bg-violet-200 hover:border-2 hover:border-violet-800">
             Home
           </Link>
-
+          <hr />
           <Link to="/about" className="block rounded-md px-3 py-2 text-base font-medium hover:bg-violet-200 dark:hover:bg-violet-400 dark:hover:text-white hover:border-2 hover:border-violet-800">
             About
+          </Link>
+          <hr />
+          <Link to="/admin/dashboard" className="block rounded-md px-3 py-2 text-base font-medium hover:bg-violet-200 dark:hover:bg-violet-400 dark:hover:text-white hover:border-2 hover:border-violet-800">
+            Admin Planel
           </Link>
         </div>
       </DisclosurePanel>

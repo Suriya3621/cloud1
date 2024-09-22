@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { MdOutlineFileDownload } from "react-icons/md";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
 
 function Preview() {
   const { id } = useParams();

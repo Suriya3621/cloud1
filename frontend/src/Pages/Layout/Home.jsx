@@ -4,9 +4,13 @@ import "../Styles/Home.css";
 import FileDisplay from './SubComponent/FileDisplay';
 import { useCookies } from 'react-cookie';
 import Upload from "./SubComponent/Upload";
-import Head from "../../App/Head"
+import Head from "../../App/Head";
+
+const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
+
 function Home() {
   const [reload, setReload] = useState(false);
+  const [filesCount,setFilesCount] = useState(0)
   const [msg, setMsg] = useState("");
   const [uploadbtn, setUploadbtn] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -20,7 +24,6 @@ function Home() {
   const [, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [cookie] = useCookies(['userId']);
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +34,7 @@ function Home() {
 
         const response = await axios.get(`${backendUrl}/file/findfile?id=${userData._id}`);
         const files = response.data.data;
-
+        setFilesCount(response.data.Count)
         const categorizedData = {
           videoData: files.filter(file => file.fileType.startsWith('video')),
           imageData: files.filter(file => file.fileType.startsWith('image')),
@@ -98,7 +101,7 @@ function Home() {
   };
 
   const dataToDisplay = getDataForCategory(selectedCategory);
-
+ 
   const uploadingHandling = (uploadBox, uploadingStage,message) => {
     setUploadbtn(uploadBox);
     setUploading(uploadingStage);
@@ -107,7 +110,7 @@ function Home() {
   return (
     <div>
    <Head title="Home" />
-      <section className="light:bg-white dark:bg-gray-900 text-slate-900 dark:text-white">
+      <section className="light:bg-slate-200 dark:bg-gray-900 text-slate-900 dark:text-white">
         <br />
         <header className="space-y-4 p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6 bg-white dark:bg-gray-900">
           <div className="flex items-center justify-between">
@@ -154,6 +157,8 @@ function Home() {
               onChange={handleSearch}
             />
           </form>
+       <h4>Number of Files: {filesCount}</h4>
+       
         </header>
       </section>
       <div className="dark-gray-800 h-full">
@@ -191,7 +196,7 @@ function Home() {
                 </button>
               ))}
             </nav>
-            <div className="content min-h-dvh bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+            <div className="content min-h-dvh bg-slate-200 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
               <br />
               <hr />
               <FileDisplay fileData={dataToDisplay} reload={handleReload} />

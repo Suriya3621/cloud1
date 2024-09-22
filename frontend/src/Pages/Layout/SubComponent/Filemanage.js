@@ -1,8 +1,8 @@
 import { ref, deleteObject } from "firebase/storage";
-import { storage } from "../../../App/Firebase.js";
+import { storage } from "../../../App/Firebase.jsx";
 import axios from "axios";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
 
 export const deleteFile = async (filePath) => {
   console.log("File path for deletion:", filePath);

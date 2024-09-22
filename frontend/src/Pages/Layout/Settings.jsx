@@ -1,8 +1,8 @@
 import React from 'react';
 import { CiLight } from "react-icons/ci";
 import { MdDarkMode } from "react-icons/md";
-import { useTheme } from '../../App/Theme.js';
-import { useFont } from '../../App/FontContext.js';
+import { useTheme } from '../../App/Theme.jsx';
+import { useFont } from '../../App/FontContext.jsx';
 
 function Settings() {
   const { darkMode, setDarkMode } = useTheme();

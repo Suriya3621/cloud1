@@ -9,7 +9,7 @@ import { setReload } from "../../../Slice/Reload";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
 
 function ReadDelete({ file, update, reload }) {
   const dispatch = useDispatch();

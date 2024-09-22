@@ -5,7 +5,9 @@ import { IoEyeSharp } from 'react-icons/io5';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../../App/Firebase.js';
+import { storage } from '../../App/Firebase.jsx';
+
+const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -56,7 +58,7 @@ const handleSubmit = async (e) => {
     const response = await axios.post(`${backendUrl}/createuser`, {
       name: formData.name,
       email: formData.email,
-      password: formData.password,
+      password: formData.password,s
     });
     
     if (response.data.success) {

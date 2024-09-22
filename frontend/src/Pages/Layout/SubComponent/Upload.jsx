@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../../../App/Firebase.js';
+import { storage } from '../../../App/Firebase.jsx';
 import { useSelector } from 'react-redux';
+
+const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
 
 function Upload({ handleUploadBox, reload }) {
   const userData = useSelector((state) => state.user.value);
@@ -12,7 +14,6 @@ function Upload({ handleUploadBox, reload }) {
   const [message, setMessage] = useState('');
   const [popupVisible, ] = useState(false);
 
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);

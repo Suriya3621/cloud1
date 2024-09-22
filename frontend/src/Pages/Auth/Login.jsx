@@ -28,7 +28,7 @@ export default function Login() {
     setPassword(e.target.value);
   };
 
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
 
   const handleLogin = async (e) => {
     e.preventDefault();

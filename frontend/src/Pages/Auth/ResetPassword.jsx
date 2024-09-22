@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import clsx from 'clsx';
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
 
 export default function ResetPassword() {
   const { token } = useParams(); // Access the token from the URL

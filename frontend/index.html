@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+  <link rel="icon" type="image/png" href="./image/cloud-upload.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud Storage platform</title>
+  <script>
+    tailwind.config = {
+      content: [
+        "./index.html",
+        "./src/**/*.{js,jsx,ts,tsx}",
+      ],
+      darkMode: 'class', // Enable class-based dark mode
+      theme: {
+        extend: {},
+      },
+      plugins: [],
+    }
+  </script>
+  <style>
+    body>#root>div {
+      min-height: 100vh;
+    }
+
+    .nav-index {
+      z-index: 50px;
+    }
+  </style>
+ 
+</head>
+
+<body class="dark:bg-gray-800 bg-slate-200">
+  <div id="root"></div>
+  <script type="module" src="./src/main.jsx"></script>
+</body>
+
+</html>

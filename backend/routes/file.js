@@ -102,7 +102,7 @@ router.get('/findfile', async (req, res) => {
     const { id } = req.query;
     const files = await FileUpload.find({ id });
     console.log(files)
-    res.status(200).send({ success: true, data: files });
+    res.status(200).send({ success: true,Count:files.length, data: files });
   } catch (err) {
     console.error('Error fetching files:', err);
     res.status(500).send({ success: false, error: err.message });

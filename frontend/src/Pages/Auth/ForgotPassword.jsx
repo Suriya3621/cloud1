@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React,{ useState } from 'react';
 import axios from "axios";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_APP_BACKEND_URL;
 export default function ForgotPassword() {
   const [email,setEmail] = useState("")
   const [msg,setMsg] = useState(false)
