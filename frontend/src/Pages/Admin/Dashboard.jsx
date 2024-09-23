@@ -5,7 +5,7 @@ export default function Dashboard() {
     <div>
         <br />
         <div>
-      hello
+      
         </div>
     </div>
   )

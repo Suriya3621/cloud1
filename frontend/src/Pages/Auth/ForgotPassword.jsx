@@ -12,7 +12,8 @@ export default function ForgotPassword() {
       return alert("Please enter your Email")
     }
     try{
-      axios.post(`${backendUrl}/forgotpassword`,{ email })
+      let response = axios.post(`${backendUrl}/forgotpassword`,{ email })
+      console.log(response)
       setMsg(true)
     }catch(err){
       console.log(err)

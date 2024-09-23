@@ -5,6 +5,9 @@ import { FaEdit, FaSave, FaTrashAlt } from "react-icons/fa";
 import { CSSTransition } from 'react-transition-group';
 import { getStorage,listAll , deleteObject, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
+
+const BackendURL = import.meta.env.VITE_APP_BACKEND_URL;
+
 const Profile = () => {
   const [cookies,,removeCookie] = useCookies(['userId']);
   const [userData, setUserData] = useState({});
@@ -29,7 +32,7 @@ const Profile = () => {
       }
 
       try {
-        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/${cookies.userId}`);
+        const { data } = await axios.get(`${BackendURL}/${cookies.userId}`);
         setUserData(data.data);
         setEditData({
           name: data.data.name,
@@ -106,7 +109,7 @@ const handleSave = async () => {
         avatarUrl = await uploadAvatar(); // Upload new avatar after deletion
       }
 
-      const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/${cookies.userId}`, {
+      const { data } = await axios.put(`${BackendURL}/${cookies.userId}`, {
         ...editData,
         avatar: avatarUrl
       });
@@ -126,7 +129,7 @@ const handleDelete = async () => {
 
   try {
     // Delete the user data from the backend
-    await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/${cookies.userId}`);
+    await axios.delete(`${BackendURL}/${cookies.userId}`);
 
     // Delete all files in the user's folder
     const listResult = await listAll(userFolderRef);
@@ -147,7 +150,14 @@ const handleDelete = async () => {
   }
 };
   if (isLoading) return <div className="flex items-center justify-center dark:text-white text-4xl h-screen">Loading...</div>;
-  if (error) return <div className="text-center text-red-500">{error}</div>;
+  if (error) return(
+    <>
+      <br />
+      <br />
+      <br />
+      <div className="text-center text-red-500">{error}</div>;
+    </>
+  )
 
   return (
     <CSSTransition in={isMounted} timeout={300} classNames="fade" unmountOnExit>
