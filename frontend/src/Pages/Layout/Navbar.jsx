@@ -101,7 +101,7 @@ const Navbar = () => {
             Admin Panel
           </Link>
           <hr />
-          <Link to="/settings" className="flex justify-center px-4 py-2 text-sm dark:hover:bg-gray-700 hover:bg-gray-100">
+          <Link to="/settings" className="flex justify-center px-4 py-2 text-sm dark:hover:bg-gray-700  hover:bg-violet-200">
                     <CiSettings className="size-6" /> Settings
           </Link>
           <hr />
