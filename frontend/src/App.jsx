@@ -4,7 +4,6 @@ import Navbar from "./Pages/Layout/Navbar";
 import Settings from "./Pages/Layout/Settings";
 import Home from "./Pages/Layout/Home";
 import Contact from "./Pages/Layout/Contact";
-import Footer from "./Pages/Layout/Footer";
 import Preview from "./Pages/Layout/SubComponent/Preview";
 import Login from "./Pages/Auth/Login";
 import Profile from "./Pages/Auth/Profile";
@@ -80,8 +79,6 @@ function App() {
       <br />
       <br />
       <br />
-
-      <Footer />
     </div>
   )
 }
